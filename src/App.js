@@ -1,24 +1,55 @@
-import logo from './logo.svg';
+import React,{ Fragment } from 'react';
+import { Nav } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import { useCookies } from 'react-cookie' ;
+import routes from './conf/routes.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+ 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const [cookies,setCookie,removeCookie] = useCookies(['userId']);
+
+  if (cookies && cookies.userId) {
+    setCookie('userId', cookies.userId, {
+        path: '/',
+        maxAge: process.env.REACT_APP_ENV_COOKIES_MAX_AGE
+    });
+}
+
+  function isLoggedIn(){
+    return cookies.userId == 'undefined' || !cookies.userId ? false : true;
+  }
+
+    return (
+    <Router>
+      <Nav defaultActiveKey="/">
+      {isLoggedIn() ?
+          <Fragment>
+              <Nav.Item as="li">
+                <Nav.Link href="/tweet">Tweet</Nav.Link>
+              </Nav.Item>
+
+            <Nav.Item as="li">
+              <Nav.Link onClick = {() => {
+                  removeCookie('userId');
+              }}>Logout</Nav.Link>
+            </Nav.Item>
+          </Fragment>
+          
+      :
+          <Nav.Item as="li">
+              <Nav.Link href="/login">Login</Nav.Link>
+          </Nav.Item>
+
+      }
+      </Nav>
+      <Fragment>
+        {routes.map(({ path, component, name}) => {
+          return <Route exact path={path} key={name} component={component}   />
+        })}
+      </Fragment>
+    </Router>
   );
 }
 
