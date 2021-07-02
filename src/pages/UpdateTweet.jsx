@@ -1,4 +1,4 @@
-import React, {Fragment,  Component, useState, useEffect } from 'react';
+import React, {Fragment, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import { useCookies } from 'react-cookie';
@@ -7,7 +7,6 @@ import { useCookies } from 'react-cookie';
 const axios = require('axios');
 export default function Tweet() {
     const [cookies] = useCookies(['userId']);
-    const [tweet, setTweet] = useState("");
     const [Newtweet, setNewTweet] = useState("");
 
     const update = async (id) => {

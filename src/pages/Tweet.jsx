@@ -61,6 +61,10 @@ export default function Tweet() {
 
     const letsupdate = async (id) => {
         console.log(id)
+        setCookie('userId',id, {
+            path: '/',
+            maxAge : process.env.REACT_APP_ENV_COOKIES_MAX_AGE
+        });
         window.location.href ='/update';
     }    
 
