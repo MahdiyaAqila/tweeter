@@ -1,4 +1,4 @@
-import React, {Fragment,  Component, useState} from 'react';
+import React, {Fragment,  Component, useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Helmet } from 'react-helmet';
 import { useCookies } from 'react-cookie';
@@ -6,8 +6,17 @@ import { useCookies } from 'react-cookie';
 
 const axios = require('axios');
 export default function Tweet() {
-    const handleChange = (event) => {
-        window.location.href ='/update';
+    const [cookies] = useCookies(['userId']);
+    const [tweet, setTweet] = useState("");
+    const [Newtweet, setNewTweet] = useState("");
+
+    const update = async (id) => {
+        axios.put('http://localhost:3005/tweets/update/' + id, {
+            user_id: cookies.userId,
+            content : Newtweet,
+        });
+        setNewTweet("")
+        window.location.href ='/tweet';
     };
 
     return(
@@ -24,13 +33,15 @@ export default function Tweet() {
                             <Form.Control 
                             as="textarea" 
                             rows="3" 
-                            value={this.state.content} 
+                            onChange ={(e) => {
+                                setNewTweet(e.target.value);
+                            }}
                            />
                         </Form.Group>
                         <Button 
                         ariant="primary" 
                         size="sm"
-                        onClick={this.handleChange} 
+                        onClick={()=> {update(cookies.userId)}}
                         >update
                         </Button>
                     </Col>
