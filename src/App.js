@@ -38,10 +38,15 @@ function App() {
           </Fragment>
           
       :
+      <Fragment>
           <Nav.Item as="li">
               <Nav.Link href="/login">Login</Nav.Link>
           </Nav.Item>
 
+          <Nav.Item as="li">
+            <Nav.Link href="/registration">registrasi</Nav.Link>
+          </Nav.Item>
+      </Fragment>
       }
       </Nav>
       <Fragment>
